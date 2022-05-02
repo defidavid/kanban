@@ -37,7 +37,7 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
 
   return (
     <>
-      <Card sx={{ margin: 1 }}>
+      <Card sx={{ margin: 1, marginBottom: 3 }}>
         <CardHeader
           sx={{ paddingBottom: 1 }}
           action={

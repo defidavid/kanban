@@ -48,6 +48,8 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
             backgroundColor: "common.black",
             border: "1px solid",
             borderColor: "grey.800",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -87,10 +89,12 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
               />
             </Box>
           </Box>
-          {column.taskList.map(taskId => {
-            const task = getTask(taskId);
-            return <Task parentColumnId={column.id} task={task} key={taskId} />;
-          })}
+          <Box overflow="auto">
+            {column.taskList.map(taskId => {
+              const task = getTask(taskId);
+              return <Task parentColumnId={column.id} task={task} key={taskId} />;
+            })}
+          </Box>
         </Box>
       </Box>
       {editColumnOpen && <EditColumnModal column={column} onCloseClick={onCloseEditColumn} />}
