@@ -1,6 +1,7 @@
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
+import Divider from "@mui/material/Divider";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { MouseEventHandler, useCallback, useState } from "react";
 import { TaskState } from "../../contexts/kanban/types";
@@ -68,6 +69,7 @@ export default function TaskMenu({
         <MenuItem onClick={handleStatus}>
           Set Status: {task.status === OPEN ? taskStatusTextMap[CLOSED] : taskStatusTextMap[OPEN]}
         </MenuItem>
+        <Divider />
         <MenuItem onClick={handleArchive}>Archive</MenuItem>
         <MenuItem onClick={handleDelete}>Delete task</MenuItem>
       </Menu>

@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { MouseEventHandler, useCallback, useState } from "react";
 import { ColumnState } from "../../contexts/kanban/types";
+import Divider from "@mui/material/Divider";
 
 export default function ColumnMenu({
   onEditColumnClick,
@@ -49,6 +50,7 @@ export default function ColumnMenu({
         }}
       >
         <MenuItem onClick={handleEdit}>Edit column</MenuItem>
+        {!column.taskList.length && <Divider />}
         {!column.taskList.length && <MenuItem onClick={handleDelete}>Delete column</MenuItem>}
       </Menu>
     </div>

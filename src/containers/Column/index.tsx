@@ -37,6 +37,7 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
         sx={{
           padding: 1,
           height: "100%",
+          paddingRight: 3,
         }}
       >
         <Box

@@ -4,6 +4,7 @@ import EmptyBoard from "../../components/EmptyBoard";
 import { useCallback, useState } from "react";
 import AddColumnModal from "../../containers/AddColumnModal";
 import Column from "../../containers/Column";
+import AddColumnCard from "../../components/AddColumnCard";
 
 export default function Board(): JSX.Element {
   const { getColumns } = useKanban();
@@ -15,11 +16,12 @@ export default function Board(): JSX.Element {
 
   return (
     <>
-      <Container maxWidth="xl" sx={{ height: "100%", paddingTop: 3, paddingBottom: 3 }}>
+      <Container maxWidth="xl" sx={{ height: "100%", paddingTop: 3, paddingBottom: 3, display: "flex" }}>
         {!columns.length && <EmptyBoard onClick={onAddColumnClick} />}
         {columns.map(column => {
           return <Column key={column.id} column={column} />;
         })}
+        {!!columns.length && <AddColumnCard onClick={onAddColumnClick} />}
       </Container>
       {addColumnOpen && <AddColumnModal onCloseClick={onCloseAddColumn} />}
     </>
