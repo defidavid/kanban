@@ -170,9 +170,11 @@ export default function Column({ column, index }: { column: ColumnState; index: 
                   {column.taskList.length}
                 </Typography>
               )}
-              <Typography sx={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }} variant="h6">
-                <span title={column.name}>{column.name}</span>
-              </Typography>
+              {bp !== "xs" && (
+                <Typography sx={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }} variant="h6">
+                  <span title={column.name}>{column.name}</span>
+                </Typography>
+              )}
             </Box>
             <Box display="flex">
               <IconButton

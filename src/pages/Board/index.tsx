@@ -1,4 +1,8 @@
 import Container from "@mui/material/Container";
+import Badge from "@mui/material/Badge";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Box from "@mui/material/Box";
 import useKanban from "../../hooks/useKanban";
 import EmptyBoard from "../../components/EmptyBoard";
 import { useCallback, useEffect, useState } from "react";
@@ -6,8 +10,6 @@ import AddColumnModal from "../../containers/AddColumnModal";
 import Column from "../../containers/Column";
 import AddColumnCard from "../../components/AddColumnCard";
 import useWindowBreakpoint from "../../hooks/useWindowBreakpoint";
-import { Badge, Tab, Tabs } from "@mui/material";
-import { Box } from "@mui/system";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function Board(): JSX.Element {
