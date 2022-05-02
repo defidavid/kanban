@@ -12,6 +12,7 @@ import ColumnMenu from "../../components/ColumnMenu";
 import Task from "../Task";
 import { COLUMN, TASK } from "../../constants/dnd";
 import { TaskDragItem } from "../Task/types";
+import useWindowBreakpoint from "../../hooks/useWindowBreakpoint";
 
 type ColumnDragItem = {
   column: ColumnState;
@@ -22,6 +23,8 @@ type ColumnDragItem = {
 export default function Column({ column, index }: { column: ColumnState; index: number }): JSX.Element {
   const [editColumnOpen, setEditColumnOpen] = useState(false);
   const [addTaskOpen, setAddTaskOpen] = useState(false);
+
+  const bp = useWindowBreakpoint();
 
   const { deleteColumn, getTask, moveTask, updateColumnOrder } = useKanban();
 
@@ -120,7 +123,7 @@ export default function Column({ column, index }: { column: ColumnState; index: 
     <>
       <Box
         sx={{
-          padding: 1,
+          padding: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
           height: "100%",
           paddingRight: 3,
           opacity: isDragging ? 0 : 1,
@@ -130,34 +133,43 @@ export default function Column({ column, index }: { column: ColumnState; index: 
           ref={ref}
           sx={{
             height: "100%",
-            width: 355,
-            borderRadius: 1,
-            padding: 2,
+            width: {
+              xs: "100%",
+              sm: 355,
+              md: 355,
+              lg: 355,
+              xl: 355,
+            },
+            borderRadius: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+            padding: { xs: 1, sm: 2, md: 2, lg: 2, xl: 2 },
             backgroundColor: "common.black",
             border: "1px solid",
-            borderColor: "grey.800",
+            // borderColor: "grey.800",
+            borderColor: { xs: "transparent", sm: "grey.800", md: "grey.800", lg: "grey.800", xl: "grey.800" },
             display: "flex",
             flexDirection: "column",
           }}
         >
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" overflow="hidden" alignItems="center" pl={1}>
-              <Typography
-                borderRadius={10}
-                mr={2}
-                pr={1.5}
-                pl={1.5}
-                sx={{
-                  backgroundColor: "grey.800",
-                  display: "flex",
-                  alignItems: "end",
-                }}
-                minWidth="1.5em"
-                lineHeight="1.5em"
-                textAlign="center"
-              >
-                {column.taskList.length}
-              </Typography>
+              {bp !== "xs" && (
+                <Typography
+                  borderRadius={10}
+                  mr={2}
+                  pr={1.5}
+                  pl={1.5}
+                  sx={{
+                    backgroundColor: "grey.800",
+                    display: "flex",
+                    alignItems: "end",
+                  }}
+                  minWidth="1.5em"
+                  lineHeight="1.5em"
+                  textAlign="center"
+                >
+                  {column.taskList.length}
+                </Typography>
+              )}
               <Typography sx={{ textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }} variant="h6">
                 <span title={column.name}>{column.name}</span>
               </Typography>

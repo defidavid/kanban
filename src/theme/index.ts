@@ -4,16 +4,16 @@ import { Size } from "./types";
 export default function createTheme(size: Size): Theme {
   const sizeMapping = {
     xs: {
-      SPACING: 3,
-      FONT_SIZE: "11px",
+      SPACING: 5,
+      FONT_SIZE: "16px",
     },
     sm: {
       SPACING: 4,
-      FONT_SIZE: "13px",
+      FONT_SIZE: "14px",
     },
     md: {
       SPACING: 5,
-      FONT_SIZE: "14px",
+      FONT_SIZE: "15px",
     },
     lg: {
       SPACING: 5,
