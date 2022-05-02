@@ -41,6 +41,14 @@ export default function createTheme(size: Size): Theme {
           },
         },
       },
+      MuiBackdrop: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "rgba(0, 0, 0, 0.5) !important",
+            backdropFilter: "blur(6px)",
+          },
+        },
+      },
     },
     palette: { mode: "dark" },
     typography: {},
