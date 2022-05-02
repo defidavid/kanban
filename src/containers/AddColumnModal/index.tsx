@@ -46,7 +46,7 @@ export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => v
       </DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TaskTitleInput onChange={value => setName(value)} value={name} />
+          <TaskTitleInput label="Column name" onChange={value => setName(value)} value={name} />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>

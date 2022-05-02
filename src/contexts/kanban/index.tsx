@@ -186,10 +186,10 @@ function addTask(state: KanbanState, payload: AddTaskPayload): KanbanState {
 function deleteColumn(state: KanbanState, id: ColumnId): KanbanState {
   // Todo: error check for existing id
   try {
-    const taskList = state.columns[id].taskList;
+    const column = state.columns[id];
     return deepFreeze<KanbanState>({
       ...state,
-      tasks: omit(state.tasks, taskList),
+      tasks: omit(state.tasks, [...column.taskList, ...column.archivedTaskList]),
       columns: omit(state.columns, [id]),
       columnList: state.columnList.filter(columnId => columnId !== id),
     });

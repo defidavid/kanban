@@ -10,11 +10,13 @@ export default function TaskMenu({
   onEditTaskClick,
   onDeleteTaskClick,
   onChangeStatusClick,
+  onArchiveTaskClick,
   task,
 }: {
   onEditTaskClick: () => void;
   onDeleteTaskClick: () => void;
   onChangeStatusClick: (status: Status) => void;
+  onArchiveTaskClick: () => void;
   task: TaskState;
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -39,6 +41,11 @@ export default function TaskMenu({
     onDeleteTaskClick();
   }, [onDeleteTaskClick]);
 
+  const handleArchive = useCallback(() => {
+    setAnchorEl(null);
+    onArchiveTaskClick();
+  }, [onArchiveTaskClick]);
+
   return (
     <div>
       <IconButton onClick={handleClick}>
@@ -61,6 +68,7 @@ export default function TaskMenu({
         <MenuItem onClick={handleStatus}>
           Set Status: {task.status === OPEN ? taskStatusTextMap[CLOSED] : taskStatusTextMap[OPEN]}
         </MenuItem>
+        <MenuItem onClick={handleArchive}>Archive</MenuItem>
         <MenuItem onClick={handleDelete}>Delete task</MenuItem>
       </Menu>
     </div>

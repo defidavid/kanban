@@ -21,8 +21,8 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
   const onCloseAddTask = useCallback(() => setAddTaskOpen(false), []);
   const onDeleteColumnClick = useCallback(() => {
     const msg =
-      column.taskList.length > 0
-        ? `This action will remove any cards and automation preset associated with the column. \n
+      column.taskList.length || column.archivedTaskList.length > 0
+        ? `This action will remove any cards, including archived, associated with the column. \n
     Are you sure you want to delete this column?`
         : "Are you sure you want to delete this column?";
 

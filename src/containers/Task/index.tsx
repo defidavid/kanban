@@ -12,21 +12,28 @@ import { taskStatusTextMap } from "../../constants/taskStatus";
 export default function Task({ task, parentColumnId }: { task: TaskState; parentColumnId: ColumnId }): JSX.Element {
   const [editTaskOpen, setEditTaskOpen] = useState(false);
 
-  const { deleteTask, updateTask } = useKanban();
+  const { deleteTask, updateTask, updateTaskArchive } = useKanban();
 
   const onEditTaskClick = useCallback(() => setEditTaskOpen(true), []);
+
   const onCloseEditTask = useCallback(() => setEditTaskOpen(false), []);
+
   const onDeleteTaskClick = useCallback(() => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       deleteTask({ id: task.id, parentColumnId });
     }
   }, [deleteTask, task, parentColumnId]);
+
   const onChangeStatusClick = useCallback(
     status => {
       updateTask({ id: task.id, status });
     },
     [task, updateTask],
   );
+
+  const onArchiveTaskClick = useCallback(() => {
+    updateTaskArchive({ id: task.id, columnId: parentColumnId, archived: true });
+  }, [task, updateTaskArchive, parentColumnId]);
 
   return (
     <>
@@ -36,6 +43,7 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
           action={
             <TaskMenu
               onChangeStatusClick={onChangeStatusClick}
+              onArchiveTaskClick={onArchiveTaskClick}
               task={task}
               onEditTaskClick={onEditTaskClick}
               onDeleteTaskClick={onDeleteTaskClick}
