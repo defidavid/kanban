@@ -8,6 +8,7 @@ export type TaskState = {
   name: string;
   description: string;
   status: Status;
+  creationDatetime: number;
 };
 
 export type ColumnState = {

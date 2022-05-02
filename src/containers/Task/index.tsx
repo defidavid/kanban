@@ -62,7 +62,7 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
             {taskStatusTextMap[task.status]}
           </Typography>
           <Typography variant="caption" color="textSecondary">
-            Jan. 26 1982
+            {new Date(task.creationDatetime).toLocaleString()}
           </Typography>
         </CardContent>
       </Card>

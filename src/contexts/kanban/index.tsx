@@ -39,6 +39,7 @@ const initialTaskState: TaskState = Object.freeze({
   name: "",
   description: "",
   status: OPEN,
+  creationDatetime: 0,
 });
 
 const initialColumnState: ColumnState = Object.freeze({
@@ -171,6 +172,7 @@ function addTask(state: KanbanState, payload: AddTaskPayload): KanbanState {
     const newState = _updateTask(state, {
       ...initialTaskState,
       ...payload,
+      creationDatetime: Date.now(),
     });
     return _updateColumn(newState, {
       ...column,
