@@ -90,10 +90,10 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
               />
             </Box>
           </Box>
-          <Box overflow="auto">
-            {column.taskList.map(taskId => {
+          <Box overflow="auto" pt={1}>
+            {column.taskList.map((taskId, i) => {
               const task = getTask(taskId);
-              return <Task parentColumnId={column.id} task={task} key={taskId} />;
+              return <Task index={i} parentColumnId={column.id} task={task} key={taskId} />;
             })}
           </Box>
         </Box>
