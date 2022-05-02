@@ -1,6 +1,6 @@
 import { ColumnId, TaskState } from "../../contexts/kanban/types";
 
-export type DragItem = {
+export type TaskDragItem = {
   index: number;
   task: TaskState;
   parentColumnId: ColumnId;

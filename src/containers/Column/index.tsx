@@ -3,21 +3,27 @@ import Typography from "@mui/material/Typography";
 import { ColumnState } from "../../contexts/kanban/types";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { useDrop } from "react-dnd";
+import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { useCallback, useRef, useState } from "react";
 import EditColumnModal from "../EditColumnModal";
 import useKanban from "../../hooks/useKanban";
 import AddTaskModal from "../AddTaskModal";
 import ColumnMenu from "../../components/ColumnMenu";
 import Task from "../Task";
-import { TASK } from "../../constants/dnd";
-import { DragItem } from "../Task/types";
+import { COLUMN, TASK } from "../../constants/dnd";
+import { TaskDragItem } from "../Task/types";
 
-export default function Column({ column }: { column: ColumnState }): JSX.Element {
+type ColumnDragItem = {
+  column: ColumnState;
+  index: number;
+  type: string;
+};
+
+export default function Column({ column, index }: { column: ColumnState; index: number }): JSX.Element {
   const [editColumnOpen, setEditColumnOpen] = useState(false);
   const [addTaskOpen, setAddTaskOpen] = useState(false);
 
-  const { deleteColumn, getTask, moveTask } = useKanban();
+  const { deleteColumn, getTask, moveTask, updateColumnOrder } = useKanban();
 
   const onEditColumnClick = useCallback(() => setEditColumnOpen(true), []);
   const onCloseEditColumn = useCallback(() => setEditColumnOpen(false), []);
@@ -36,20 +42,28 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const [, drop] = useDrop<DragItem, void, { isOver: boolean }>({
-    accept: TASK,
-    collect(monitor) {
-      return {
-        isOver: monitor.isOver(),
-      };
+  const [{ isDragging }, drag] = useDrag<ColumnDragItem, void, { isDragging: boolean }>({
+    type: COLUMN,
+    item: {
+      index,
+      column,
+    } as ColumnDragItem,
+    isDragging: monitor => {
+      return column.id === monitor.getItem().column.id;
     },
-    hover(item: DragItem) {
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [, taskDrop] = useDrop<TaskDragItem>({
+    accept: [TASK],
+    hover(item: TaskDragItem) {
       if (!ref.current) {
         return;
       }
 
-      if (item.parentColumnId !== column.id) {
-        // Switching columns
+      if (column.id !== item.parentColumnId) {
         moveTask({
           id: item.task.id,
           fromColumnId: item.parentColumnId,
@@ -61,7 +75,46 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
     },
   });
 
-  drop(ref);
+  const [, columnDrop] = useDrop<ColumnDragItem>({
+    accept: [COLUMN],
+    hover(item: ColumnDragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+
+      const dragIndex = item.index;
+
+      const hoverIndex = index;
+
+      // Determine rectangle on screen
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+      // Get vertical middle
+      const hoverMiddleX = (hoverBoundingRect.left - hoverBoundingRect.right) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+
+      // Get pixels to the top
+      const hoverClientX = (clientOffset as XYCoord).x - hoverBoundingRect.right;
+
+      // Dragging rightwards
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
+        return;
+      }
+
+      // Dragging leftwards
+      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
+        return;
+      }
+
+      updateColumnOrder({ id: item.column.id, newOrderIndex: hoverIndex });
+
+      item.index = hoverIndex;
+    },
+  });
+
+  drag(taskDrop(columnDrop(ref)));
 
   return (
     <>
@@ -70,6 +123,7 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
           padding: 1,
           height: "100%",
           paddingRight: 3,
+          opacity: isDragging ? 0 : 1,
         }}
       >
         <Box

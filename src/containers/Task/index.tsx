@@ -11,7 +11,7 @@ import { taskStatusTextMap } from "../../constants/taskStatus";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { TASK } from "../../constants/dnd";
 import { useRef } from "react";
-import { DragItem } from "./types";
+import { TaskDragItem } from "./types";
 
 export default function Task({
   task,
@@ -27,13 +27,13 @@ export default function Task({
 
   const { deleteTask, updateTask, updateTaskArchive, updateTaskOrder, moveTask } = useKanban();
 
-  const [{ isDragging }, drag] = useDrag<DragItem, void, { isDragging: boolean }>({
+  const [{ isDragging }, drag] = useDrag<TaskDragItem, void, { isDragging: boolean }>({
     type: TASK,
     item: {
       index,
       task,
       parentColumnId,
-    } as DragItem,
+    } as TaskDragItem,
     isDragging: monitor => {
       return task.id === monitor.getItem().task.id;
     },
@@ -42,9 +42,9 @@ export default function Task({
     }),
   });
 
-  const [, drop] = useDrop<DragItem>({
+  const [, drop] = useDrop<TaskDragItem>({
     accept: TASK,
-    hover(item: DragItem, monitor) {
+    hover(item: TaskDragItem, monitor) {
       if (!ref.current) {
         return;
       }
@@ -142,7 +142,7 @@ export default function Task({
 
   return (
     <>
-      <Card sx={{ margin: 1, marginBottom: 3, cursor: "move", opacity: isDragging ? 0.5 : 1 }} ref={ref}>
+      <Card sx={{ margin: 1, marginBottom: 3, cursor: "move", opacity: isDragging ? 0 : 1 }} ref={ref}>
         <CardHeader
           sx={{ paddingBottom: 1 }}
           action={

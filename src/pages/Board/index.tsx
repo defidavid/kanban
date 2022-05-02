@@ -18,8 +18,8 @@ export default function Board(): JSX.Element {
     <>
       <Container maxWidth="xl" sx={{ height: "100%", paddingTop: 3, paddingBottom: 3, display: "flex" }}>
         {!columns.length && <EmptyBoard onClick={onAddColumnClick} />}
-        {columns.map(column => {
-          return <Column key={column.id} column={column} />;
+        {columns.map((column, i) => {
+          return <Column index={i} key={column.id} column={column} />;
         })}
         {!!columns.length && <AddColumnCard onClick={onAddColumnClick} />}
       </Container>
