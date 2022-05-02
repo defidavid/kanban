@@ -3,21 +3,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { CardHeader } from "@mui/material";
 import { ColumnId, TaskState } from "../../contexts/kanban/types";
-import { OPEN, CLOSED } from "../../constants/taskStatus";
 import TaskMenu from "../../components/TaskMenu";
 import { useCallback, useState } from "react";
 import useKanban from "../../hooks/useKanban";
 import EditTaskModal from "../EditTaskModal";
-
-const taskStatusTextMap = {
-  [OPEN]: "Open",
-  [CLOSED]: "Closed",
-};
+import { taskStatusTextMap } from "../../constants/taskStatus";
 
 export default function Task({ task, parentColumnId }: { task: TaskState; parentColumnId: ColumnId }): JSX.Element {
   const [editTaskOpen, setEditTaskOpen] = useState(false);
 
-  const { deleteTask } = useKanban();
+  const { deleteTask, updateTask } = useKanban();
 
   const onEditTaskClick = useCallback(() => setEditTaskOpen(true), []);
   const onCloseEditTask = useCallback(() => setEditTaskOpen(false), []);
@@ -26,13 +21,26 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
       deleteTask({ id: task.id, parentColumnId });
     }
   }, [deleteTask, task, parentColumnId]);
+  const onChangeStatusClick = useCallback(
+    status => {
+      updateTask({ id: task.id, status });
+    },
+    [task, updateTask],
+  );
 
   return (
     <>
       <Card sx={{ margin: 1 }}>
         <CardHeader
           sx={{ paddingBottom: 1 }}
-          action={<TaskMenu onEditTaskClick={onEditTaskClick} onDeleteTaskClick={onDeleteTaskClick} />}
+          action={
+            <TaskMenu
+              onChangeStatusClick={onChangeStatusClick}
+              task={task}
+              onEditTaskClick={onEditTaskClick}
+              onDeleteTaskClick={onDeleteTaskClick}
+            />
+          }
           title={<Typography variant="body1">{task.name}</Typography>}
         />
         <CardContent sx={{ paddingBottom: "1 !important", paddingTop: 0 }}>

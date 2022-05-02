@@ -3,13 +3,19 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { MouseEventHandler, useCallback, useState } from "react";
+import { TaskState } from "../../contexts/kanban/types";
+import { CLOSED, OPEN, Status, taskStatusTextMap } from "../../constants/taskStatus";
 
 export default function TaskMenu({
   onEditTaskClick,
   onDeleteTaskClick,
+  onChangeStatusClick,
+  task,
 }: {
   onEditTaskClick: () => void;
   onDeleteTaskClick: () => void;
+  onChangeStatusClick: (status: Status) => void;
+  task: TaskState;
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
@@ -17,10 +23,16 @@ export default function TaskMenu({
   const handleClick: MouseEventHandler = event => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleEdit = useCallback(() => {
     setAnchorEl(null);
     onEditTaskClick();
   }, [onEditTaskClick]);
+
+  const handleStatus = useCallback(() => {
+    setAnchorEl(null);
+    onChangeStatusClick(task.status === OPEN ? CLOSED : OPEN);
+  }, [onChangeStatusClick, task]);
 
   const handleDelete = useCallback(() => {
     setAnchorEl(null);
@@ -46,7 +58,9 @@ export default function TaskMenu({
         }}
       >
         <MenuItem onClick={handleEdit}>Edit task</MenuItem>
-        <MenuItem onClick={handleEdit}>Set Status: closed</MenuItem>
+        <MenuItem onClick={handleStatus}>
+          Set Status: {task.status === OPEN ? taskStatusTextMap[CLOSED] : taskStatusTextMap[OPEN]}
+        </MenuItem>
         <MenuItem onClick={handleDelete}>Delete task</MenuItem>
       </Menu>
     </div>

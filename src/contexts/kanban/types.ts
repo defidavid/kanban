@@ -28,9 +28,13 @@ export type TaskPayload = {
   id: TaskId;
   name: string;
   description: string;
+  status: Status;
 };
 
-export type AddTaskPayload = TaskPayload & {
+export type AddTaskPayload = {
+  id: TaskId;
+  name: string;
+  description: string;
   columnId: ColumnId;
 };
 
