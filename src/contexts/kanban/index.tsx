@@ -27,6 +27,9 @@ import {
   GetTask,
   TaskId,
   DeleteColumn,
+  DeleteTask,
+  DeleteTaskPayload,
+  AddColumnPayload,
 } from "./types";
 
 const LOCAL_STORAGE_KEY = "kanbanState";
@@ -144,7 +147,7 @@ function updateTaskArchive(state: KanbanState, payload: UpdateTaskArchivePayload
   }
 }
 
-function addColumn(state: KanbanState, payload: ColumnPayload): KanbanState {
+function addColumn(state: KanbanState, payload: AddColumnPayload): KanbanState {
   // Todo: error check for existing columnId
   try {
     const newState = _updateColumn(state, {
@@ -193,6 +196,22 @@ function deleteColumn(state: KanbanState, id: ColumnId): KanbanState {
   }
 }
 
+function deleteTask(state: KanbanState, payload: DeleteTaskPayload): KanbanState {
+  // Todo: error check for existing id
+  try {
+    const column = state.columns[payload.parentColumnId];
+    const newState = updateColumn(state, {
+      id: column.id,
+      taskList: column.taskList.filter(taskId => taskId !== payload.id),
+    });
+    return deepFreeze<KanbanState>({
+      ...newState,
+      tasks: omit(newState.tasks, [payload.id]),
+    });
+  } catch (e) {
+    return state;
+  }
+}
 const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState => {
   switch (action.type) {
     case "ADD_COLUMN":
@@ -219,6 +238,9 @@ const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState =
     case "DELETE_COLUMN":
       return deleteColumn(state, action.payload);
 
+    case "DELETE_TASK":
+      return deleteTask(state, action.payload);
+
     case "SET_STATE":
       return deepFreeze<KanbanState>(action.payload);
 
@@ -236,6 +258,7 @@ export const Context = createContext<KanbanContext>({
   updateTaskOrder: () => void 0,
   updateTaskArchive: () => void 0,
   deleteColumn: () => void 0,
+  deleteTask: () => void 0,
   getColumns: () => [],
   getTask: () => initialTaskState,
 });
@@ -335,6 +358,13 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
     });
   }, []);
 
+  const deleteTask: DeleteTask = useCallback(id => {
+    dispatch({
+      type: "DELETE_TASK",
+      payload: id,
+    });
+  }, []);
+
   const getColumns: GetColumns = useCallback(() => {
     return state.columnList.map(columnId => state.columns[columnId]);
   }, [state]);
@@ -357,6 +387,7 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
         updateTaskOrder,
         updateTaskArchive,
         deleteColumn,
+        deleteTask,
         getColumns,
         getTask,
       }}

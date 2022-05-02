@@ -1,0 +1,53 @@
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { MouseEventHandler, useCallback, useState } from "react";
+
+export default function ColumnMenu({
+  onEditColumnClick,
+  onDeleteColumnClick,
+}: {
+  onEditColumnClick: () => void;
+  onDeleteColumnClick: () => void;
+}): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick: MouseEventHandler = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleEdit = useCallback(() => {
+    setAnchorEl(null);
+    onEditColumnClick();
+  }, [onEditColumnClick]);
+
+  const handleDelete = useCallback(() => {
+    setAnchorEl(null);
+    onDeleteColumnClick();
+  }, [onDeleteColumnClick]);
+
+  return (
+    <div>
+      <IconButton onClick={handleClick}>
+        <MoreHorizIcon />
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem onClick={handleEdit}>Edit column</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete column</MenuItem>
+      </Menu>
+    </div>
+  );
+}

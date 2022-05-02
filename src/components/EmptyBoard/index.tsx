@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-export default function EmptyBoard({ onClick }: { onClick: () => void }) {
+export default function EmptyBoard({ onClick }: { onClick: () => void }): JSX.Element {
   return (
     <Box display="flex" pt={15} alignItems="center" flexDirection="column">
       <Typography variant="h5" color="textSecondary">

@@ -41,9 +41,16 @@ const UPDATE_COLUMN_ORDER = "UPDATE_COLUMN_ORDER";
 const UPDATE_TASK_ORDER = "UPDATE_TASK_ORDER";
 const UPDATE_TASK_ARCHIVE = "UPDATE_TASK_ARCHIVE";
 const DELETE_COLUMN = "DELETE_COLUMN";
+const DELETE_TASK = "DELETE_TASK";
 const SET_STATE = "SET_STATE";
 
 export type ColumnPayload = {
+  id: ColumnId;
+  name: string;
+  taskList: Array<TaskId>;
+};
+
+export type AddColumnPayload = {
   id: ColumnId;
   name: string;
 };
@@ -65,9 +72,14 @@ export type UpdateTaskArchivePayload = {
   archived: boolean;
 };
 
+export type DeleteTaskPayload = {
+  id: TaskId;
+  parentColumnId: ColumnId;
+};
+
 type AddColumnAction = {
   type: typeof ADD_COLUMN;
-  payload: ColumnPayload;
+  payload: AddColumnPayload;
 };
 
 type AddTaskAction = {
@@ -105,6 +117,11 @@ type DeleteColumnAction = {
   payload: ColumnId;
 };
 
+type DeleteTaskAction = {
+  type: typeof DELETE_TASK;
+  payload: DeleteTaskPayload;
+};
+
 type SetStateAction = {
   type: typeof SET_STATE;
   payload: KanbanState;
@@ -119,9 +136,10 @@ export type KanbanContextAction =
   | UpdateTaskOrderAction
   | UpdateTaskArchiveAction
   | DeleteColumnAction
+  | DeleteTaskAction
   | SetStateAction;
 
-export type AddColumn = (name: Omit<ColumnPayload, "id">) => ColumnId;
+export type AddColumn = (name: Omit<AddColumnPayload, "id">) => ColumnId;
 export type AddTask = (task: Omit<AddTaskPayload, "id">) => TaskId;
 export type UpdateColumn = (column: Partial<ColumnPayload> & { id: ColumnId }) => void;
 export type UpdateTask = (task: Partial<TaskPayload> & { id: TaskId }) => void;
@@ -129,6 +147,7 @@ export type UpdateColumnOrder = (params: UpdateColumnOrderPayload) => void;
 export type UpdateTaskOrder = (params: UpdateTaskOrderPayload) => void;
 export type UpdateTaskArchive = (params: UpdateTaskArchivePayload) => void;
 export type DeleteColumn = (id: ColumnId) => void;
+export type DeleteTask = (params: DeleteTaskPayload) => void;
 export type GetColumns = () => Array<ColumnState>;
 export type GetTask = (id: TaskId) => TaskState;
 
@@ -141,6 +160,7 @@ export type KanbanContext = {
   updateTaskOrder: UpdateTaskOrder;
   updateTaskArchive: UpdateTaskArchive;
   deleteColumn: DeleteColumn;
+  deleteTask: DeleteTask;
   getColumns: GetColumns;
   getTask: GetTask;
 };

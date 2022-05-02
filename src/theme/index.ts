@@ -47,6 +47,10 @@ export default function createTheme(size: Size): Theme {
             backgroundColor: "rgba(0, 0, 0, 0.5) !important",
             backdropFilter: "blur(6px)",
           },
+          invisible: {
+            backgroundColor: "transparent !important",
+            backdropFilter: "none",
+          },
         },
       },
     },
