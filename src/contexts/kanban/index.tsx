@@ -30,6 +30,8 @@ import {
   DeleteTask,
   DeleteTaskPayload,
   AddColumnPayload,
+  MoveTask,
+  MoveTaskPayload,
 } from "./types";
 
 const LOCAL_STORAGE_KEY = "kanbanState";
@@ -214,6 +216,30 @@ function deleteTask(state: KanbanState, payload: DeleteTaskPayload): KanbanState
     return state;
   }
 }
+
+function moveTask(state: KanbanState, payload: MoveTaskPayload): KanbanState {
+  // Todo: check to ensure task is not already in toColumn
+  try {
+    const columns = state.columns;
+    const fromColumn = columns[payload.fromColumnId];
+    const toColumn = columns[payload.toColumnId];
+
+    const newState = _updateColumn(state, {
+      ...fromColumn,
+      taskList: fromColumn.taskList.filter(taskId => taskId !== payload.id),
+    });
+
+    const newToColumnTaskList = [...toColumn.taskList];
+    newToColumnTaskList.splice(payload.orderIndex, 0, payload.id);
+    return _updateColumn(newState, {
+      ...toColumn,
+      taskList: newToColumnTaskList,
+    });
+  } catch (e) {
+    return state;
+  }
+}
+
 const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState => {
   switch (action.type) {
     case "ADD_COLUMN":
@@ -243,6 +269,9 @@ const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState =
     case "DELETE_TASK":
       return deleteTask(state, action.payload);
 
+    case "MOVE_TASK":
+      return moveTask(state, action.payload);
+
     case "SET_STATE":
       return deepFreeze<KanbanState>(action.payload);
 
@@ -261,6 +290,7 @@ export const Context = createContext<KanbanContext>({
   updateTaskArchive: () => void 0,
   deleteColumn: () => void 0,
   deleteTask: () => void 0,
+  moveTask: () => void 0,
   getColumns: () => [],
   getTask: () => initialTaskState,
 });
@@ -367,6 +397,13 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
     });
   }, []);
 
+  const moveTask: MoveTask = useCallback(params => {
+    dispatch({
+      type: "MOVE_TASK",
+      payload: params,
+    });
+  }, []);
+
   const getColumns: GetColumns = useCallback(() => {
     return state.columnList.map(columnId => state.columns[columnId]);
   }, [state]);
@@ -392,6 +429,7 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
         deleteTask,
         getColumns,
         getTask,
+        moveTask,
       }}
     >
       {children}

@@ -11,12 +11,7 @@ import { taskStatusTextMap } from "../../constants/taskStatus";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { TASK } from "../../constants/dnd";
 import { useRef } from "react";
-
-type DragItem = {
-  index: number;
-  task: TaskState;
-  type: string;
-};
+import { DragItem } from "./types";
 
 export default function Task({
   task,
@@ -30,45 +25,31 @@ export default function Task({
   const ref = useRef<HTMLDivElement>(null);
   const [editTaskOpen, setEditTaskOpen] = useState(false);
 
-  const { deleteTask, updateTask, updateTaskArchive, updateTaskOrder } = useKanban();
+  const { deleteTask, updateTask, updateTaskArchive, updateTaskOrder, moveTask } = useKanban();
 
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: TASK,
-      previewOptions: {
-        offsetY: 100,
-      },
-      collect: monitor => ({
-        isDragging: !!monitor.isDragging(),
-      }),
-      item: () => {
-        return {
-          index,
-          task,
-        } as DragItem;
-      },
-    }),
-    [],
-  );
-
-  const [, drop] = useDrop<DragItem, void, { canDrop: boolean; isOver: boolean }>({
-    accept: TASK,
-    collect(monitor) {
-      return {
-        isOver: monitor.isOver(),
-        canDrop: monitor.canDrop(),
-      };
+  const [{ isDragging }, drag] = useDrag<DragItem, void, { isDragging: boolean }>({
+    type: TASK,
+    item: {
+      index,
+      task,
+      parentColumnId,
+    } as DragItem,
+    isDragging: monitor => {
+      return task.id === monitor.getItem().task.id;
     },
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [, drop] = useDrop<DragItem>({
+    accept: TASK,
     hover(item: DragItem, monitor) {
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.index;
-      const hoverIndex = index;
 
-      if (dragIndex === hoverIndex) {
-        return;
-      }
+      const hoverIndex = index;
 
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
@@ -82,28 +63,57 @@ export default function Task({
       // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
+      if (item.parentColumnId !== parentColumnId) {
+        // Switching columns
+        if (hoverClientY < hoverMiddleY) {
+          moveTask({
+            id: item.task.id,
+            fromColumnId: item.parentColumnId,
+            toColumnId: parentColumnId,
+            orderIndex: hoverIndex,
+          });
+        }
 
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
+        if (hoverClientY > hoverMiddleY) {
+          moveTask({
+            id: item.task.id,
+            fromColumnId: item.parentColumnId,
+            toColumnId: parentColumnId,
+            orderIndex: hoverIndex + 1,
+          });
+        }
+        item.parentColumnId = parentColumnId;
+      } else {
+        // Staying on the same column
+        const dragIndex = item.index;
+
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+
+        // Only perform the move when the mouse has crossed half of the items height
+        // When dragging downwards, only move when the cursor is below 50%
+        // When dragging upwards, only move when the cursor is above 50%
+
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return;
+        }
+
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return;
+        }
+
+        // Time to actually perform the action
+        updateTaskOrder({ columnId: parentColumnId, id: item.task.id, newOrderIndex: hoverIndex });
+
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        item.index = hoverIndex;
       }
-
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      // Time to actually perform the action
-      updateTaskOrder({ columnId: parentColumnId, id: item.task.id, newOrderIndex: hoverIndex });
-
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex;
     },
   });
 

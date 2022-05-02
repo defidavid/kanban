@@ -3,18 +3,21 @@ import Typography from "@mui/material/Typography";
 import { ColumnState } from "../../contexts/kanban/types";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { useCallback, useState } from "react";
+import { useDrop } from "react-dnd";
+import { useCallback, useRef, useState } from "react";
 import EditColumnModal from "../EditColumnModal";
 import useKanban from "../../hooks/useKanban";
 import AddTaskModal from "../AddTaskModal";
 import ColumnMenu from "../../components/ColumnMenu";
 import Task from "../Task";
+import { TASK } from "../../constants/dnd";
+import { DragItem } from "../Task/types";
 
 export default function Column({ column }: { column: ColumnState }): JSX.Element {
   const [editColumnOpen, setEditColumnOpen] = useState(false);
   const [addTaskOpen, setAddTaskOpen] = useState(false);
 
-  const { deleteColumn, getTask } = useKanban();
+  const { deleteColumn, getTask, moveTask } = useKanban();
 
   const onEditColumnClick = useCallback(() => setEditColumnOpen(true), []);
   const onCloseEditColumn = useCallback(() => setEditColumnOpen(false), []);
@@ -31,6 +34,35 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
     }
   }, [deleteColumn, column]);
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [, drop] = useDrop<DragItem, void, { isOver: boolean }>({
+    accept: TASK,
+    collect(monitor) {
+      return {
+        isOver: monitor.isOver(),
+      };
+    },
+    hover(item: DragItem) {
+      if (!ref.current) {
+        return;
+      }
+
+      if (item.parentColumnId !== column.id) {
+        // Switching columns
+        moveTask({
+          id: item.task.id,
+          fromColumnId: item.parentColumnId,
+          toColumnId: column.id,
+          orderIndex: column.taskList.length,
+        });
+        item.parentColumnId = column.id;
+      }
+    },
+  });
+
+  drop(ref);
+
   return (
     <>
       <Box
@@ -41,6 +73,7 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
         }}
       >
         <Box
+          ref={ref}
           sx={{
             height: "100%",
             width: 355,
