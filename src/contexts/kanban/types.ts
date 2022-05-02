@@ -40,6 +40,7 @@ const UPDATE_TASK = "UPDATE_TASK";
 const UPDATE_COLUMN_ORDER = "UPDATE_COLUMN_ORDER";
 const UPDATE_TASK_ORDER = "UPDATE_TASK_ORDER";
 const UPDATE_TASK_ARCHIVE = "UPDATE_TASK_ARCHIVE";
+const DELETE_COLUMN = "DELETE_COLUMN";
 const SET_STATE = "SET_STATE";
 
 export type ColumnPayload = {
@@ -99,6 +100,11 @@ type UpdateTaskArchiveAction = {
   payload: UpdateTaskArchivePayload;
 };
 
+type DeleteColumnAction = {
+  type: typeof DELETE_COLUMN;
+  payload: ColumnId;
+};
+
 type SetStateAction = {
   type: typeof SET_STATE;
   payload: KanbanState;
@@ -112,6 +118,7 @@ export type KanbanContextAction =
   | UpdateColumnOrderAction
   | UpdateTaskOrderAction
   | UpdateTaskArchiveAction
+  | DeleteColumnAction
   | SetStateAction;
 
 export type AddColumn = (name: Omit<ColumnPayload, "id">) => ColumnId;
@@ -121,6 +128,7 @@ export type UpdateTask = (task: Partial<TaskPayload> & { id: TaskId }) => void;
 export type UpdateColumnOrder = (params: UpdateColumnOrderPayload) => void;
 export type UpdateTaskOrder = (params: UpdateTaskOrderPayload) => void;
 export type UpdateTaskArchive = (params: UpdateTaskArchivePayload) => void;
+export type DeleteColumn = (id: ColumnId) => void;
 export type GetColumns = () => Array<ColumnState>;
 export type GetTask = (id: TaskId) => TaskState;
 
@@ -132,6 +140,7 @@ export type KanbanContext = {
   updateColumnOrder: UpdateColumnOrder;
   updateTaskOrder: UpdateTaskOrder;
   updateTaskArchive: UpdateTaskArchive;
+  deleteColumn: DeleteColumn;
   getColumns: GetColumns;
   getTask: GetTask;
 };

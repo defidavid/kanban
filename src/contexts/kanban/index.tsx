@@ -3,6 +3,7 @@ import { OPEN } from "../../constants/taskStatus";
 import arrayMove from "../../utils/arrayMove";
 import deepFreeze from "../../utils/deepFreeze";
 import { v4 as uuidv4 } from "uuid";
+import omit from "lodash/omit";
 import {
   ColumnPayload,
   AddTaskPayload,
@@ -25,6 +26,7 @@ import {
   GetColumns,
   GetTask,
   TaskId,
+  DeleteColumn,
 } from "./types";
 
 const LOCAL_STORAGE_KEY = "kanbanState";
@@ -134,8 +136,8 @@ function updateTaskArchive(state: KanbanState, payload: UpdateTaskArchivePayload
     const archived = payload.archived;
     return _updateColumn(state, {
       ...column,
-      taskList: archived ? taskList.filter(tId => tId === id) : [...taskList, id],
-      archivedTaskList: archived ? [...archivedTaskList, id] : archivedTaskList.filter(tId => tId === id),
+      taskList: archived ? taskList.filter(tId => tId !== id) : [...taskList, id],
+      archivedTaskList: archived ? [...archivedTaskList, id] : archivedTaskList.filter(tId => tId !== id),
     });
   } catch (e) {
     return state;
@@ -176,6 +178,21 @@ function addTask(state: KanbanState, payload: AddTaskPayload): KanbanState {
   }
 }
 
+function deleteColumn(state: KanbanState, id: ColumnId): KanbanState {
+  // Todo: error check for existing id
+  try {
+    const taskList = state.columns[id].taskList;
+    return deepFreeze<KanbanState>({
+      ...state,
+      tasks: omit(state.tasks, taskList),
+      columns: omit(state.columns, [id]),
+      columnList: state.columnList.filter(columnId => columnId !== id),
+    });
+  } catch (e) {
+    return state;
+  }
+}
+
 const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState => {
   switch (action.type) {
     case "ADD_COLUMN":
@@ -199,6 +216,9 @@ const Reducer = (state: KanbanState, action: KanbanContextAction): KanbanState =
     case "UPDATE_TASK_ARCHIVE":
       return updateTaskArchive(state, action.payload);
 
+    case "DELETE_COLUMN":
+      return deleteColumn(state, action.payload);
+
     case "SET_STATE":
       return deepFreeze<KanbanState>(action.payload);
 
@@ -215,6 +235,7 @@ export const Context = createContext<KanbanContext>({
   updateColumnOrder: () => void 0,
   updateTaskOrder: () => void 0,
   updateTaskArchive: () => void 0,
+  deleteColumn: () => void 0,
   getColumns: () => [],
   getTask: () => initialTaskState,
 });
@@ -307,6 +328,13 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
     });
   }, []);
 
+  const deleteColumn: DeleteColumn = useCallback(id => {
+    dispatch({
+      type: "DELETE_COLUMN",
+      payload: id,
+    });
+  }, []);
+
   const getColumns: GetColumns = useCallback(() => {
     return state.columnList.map(columnId => state.columns[columnId]);
   }, [state]);
@@ -328,6 +356,7 @@ export const Provider = ({ children }: { children: JSX.Element }): JSX.Element =
         updateColumnOrder,
         updateTaskOrder,
         updateTaskArchive,
+        deleteColumn,
         getColumns,
         getTask,
       }}

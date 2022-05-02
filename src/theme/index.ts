@@ -21,7 +21,7 @@ export default function createTheme(size: Size): Theme {
     },
   };
 
-  const { SPACING } = sizeMapping[size];
+  const { SPACING, FONT_SIZE } = sizeMapping[size];
 
   return createMuiTheme({
     // breakpoints: {
@@ -33,10 +33,20 @@ export default function createTheme(size: Size): Theme {
     //     xl: 1680,
     //   },
     // },
-    components: {},
-    palette: {},
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          html: {
+            fontSize: FONT_SIZE,
+          },
+        },
+      },
+    },
+    palette: { mode: "dark" },
     typography: {},
-    shape: {},
+    shape: {
+      borderRadius: 5,
+    },
     spacing: SPACING,
   });
 }
