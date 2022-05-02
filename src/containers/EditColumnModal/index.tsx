@@ -37,7 +37,7 @@ export default function EditColumnModal({
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Edit {column.name}
+        Edit column
         <IconButton
           aria-label="close"
           onClick={onCloseClick}

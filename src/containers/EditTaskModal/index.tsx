@@ -2,46 +2,46 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { FormEvent, useCallback, useState } from "react";
 import useKanban from "../../hooks/useKanban";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog } from "../../components/Dialog";
-import { ColumnState } from "../../contexts/kanban/types";
-import TaskDescriptionInput from "../../components/TaskDescriptionInput";
-import TaskTitleInput from "../../components/TaskTitleInput";
+import { TaskState } from "../../contexts/kanban/types";
 
-export default function AddTaskModal({
+export default function EditTaskModal({
   onCloseClick,
-  column,
+  task,
 }: {
   onCloseClick: () => void;
-  column: ColumnState;
+  task: TaskState;
 }): JSX.Element {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const { addTask } = useKanban();
+  const [name, setName] = useState(task.name);
+  const [description, setDescription] = useState(task.description);
+  const { updateTask } = useKanban();
 
   const trimmedName = name.trim();
   const trimmedDescription = description.trim();
-  const buttonDisabled = !trimmedName || !trimmedDescription;
+  const buttonDisabled =
+    !trimmedName || !trimmedDescription || (task.name === trimmedName && task.description === trimmedDescription);
 
   const onSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
 
       if (!buttonDisabled) {
-        addTask({ columnId: column.id, name: name.trim(), description: description.trim() });
+        updateTask({ id: task.id, name: name.trim(), description: description.trim() });
         onCloseClick();
       }
     },
-    [name, addTask, buttonDisabled, onCloseClick, column, description],
+    [name, updateTask, buttonDisabled, onCloseClick, task, description],
   );
 
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Add a task
+        Update task
         <IconButton
           aria-label="close"
           onClick={onCloseClick}
@@ -57,14 +57,29 @@ export default function AddTaskModal({
       </DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TaskTitleInput value={name} onChange={value => setName(value)} />
+          <TextField
+            fullWidth
+            label="Task name"
+            inputProps={{ maxLength: 50 }}
+            autoFocus
+            onChange={(e: React.ChangeEvent) => setName((e.target as HTMLTextAreaElement).value)}
+            value={name}
+          />
         </DialogContent>
         <DialogContent>
-          <TaskDescriptionInput value={description} onChange={value => setDescription(value)} />
+          <TextField
+            fullWidth
+            label="Description"
+            multiline
+            inputProps={{ maxLength: 256 }}
+            rows={4}
+            onChange={(e: React.ChangeEvent) => setDescription((e.target as HTMLTextAreaElement).value)}
+            value={description}
+          />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>
-            Create task
+            Update task
           </Button>
         </DialogActions>
       </form>

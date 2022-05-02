@@ -3,13 +3,16 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { MouseEventHandler, useCallback, useState } from "react";
+import { ColumnState } from "../../contexts/kanban/types";
 
 export default function ColumnMenu({
   onEditColumnClick,
   onDeleteColumnClick,
+  column,
 }: {
   onEditColumnClick: () => void;
   onDeleteColumnClick: () => void;
+  column: ColumnState;
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
@@ -46,7 +49,7 @@ export default function ColumnMenu({
         }}
       >
         <MenuItem onClick={handleEdit}>Edit column</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete column</MenuItem>
+        {!column.taskList.length && <MenuItem onClick={handleDelete}>Delete column</MenuItem>}
       </Menu>
     </div>
   );

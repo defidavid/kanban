@@ -20,12 +20,13 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
   const onCloseEditColumn = useCallback(() => setEditColumnOpen(false), []);
   const onCloseAddTask = useCallback(() => setAddTaskOpen(false), []);
   const onDeleteColumnClick = useCallback(() => {
-    if (
-      window.confirm(
-        `This action will remove any cards and automation preset associated with the column. \n
-        Are you sure you want to delete this column?`,
-      )
-    ) {
+    const msg =
+      column.taskList.length > 0
+        ? `This action will remove any cards and automation preset associated with the column. \n
+    Are you sure you want to delete this column?`
+        : "Are you sure you want to delete this column?";
+
+    if (window.confirm(msg)) {
       deleteColumn(column.id);
     }
   }, [deleteColumn, column]);
@@ -79,7 +80,11 @@ export default function Column({ column }: { column: ColumnState }): JSX.Element
               >
                 <AddIcon />
               </IconButton>
-              <ColumnMenu onDeleteColumnClick={onDeleteColumnClick} onEditColumnClick={onEditColumnClick} />
+              <ColumnMenu
+                column={column}
+                onDeleteColumnClick={onDeleteColumnClick}
+                onEditColumnClick={onEditColumnClick}
+              />
             </Box>
           </Box>
           {column.taskList.map(taskId => {

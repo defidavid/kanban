@@ -7,6 +7,7 @@ import { OPEN, CLOSED } from "../../constants/taskStatus";
 import TaskMenu from "../../components/TaskMenu";
 import { useCallback, useState } from "react";
 import useKanban from "../../hooks/useKanban";
+import EditTaskModal from "../EditTaskModal";
 
 const taskStatusTextMap = {
   [OPEN]: "Open",
@@ -19,6 +20,7 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
   const { deleteTask } = useKanban();
 
   const onEditTaskClick = useCallback(() => setEditTaskOpen(true), []);
+  const onCloseEditTask = useCallback(() => setEditTaskOpen(false), []);
   const onDeleteTaskClick = useCallback(() => {
     if (window.confirm("Are you sure you want to delete this task?")) {
       deleteTask({ id: task.id, parentColumnId });
@@ -29,12 +31,14 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
     <>
       <Card sx={{ margin: 1 }}>
         <CardHeader
-          sx={{ paddingBottom: 0 }}
+          sx={{ paddingBottom: 1 }}
           action={<TaskMenu onEditTaskClick={onEditTaskClick} onDeleteTaskClick={onDeleteTaskClick} />}
-          title={<Typography>{task.name}</Typography>}
+          title={<Typography variant="body1">{task.name}</Typography>}
         />
         <CardContent sx={{ paddingBottom: "1 !important", paddingTop: 0 }}>
-          <Typography color="textSecondary">{task.description}</Typography>
+          <Typography variant="body2" color="textSecondary">
+            {task.description}
+          </Typography>
         </CardContent>
         <CardContent
           sx={{
@@ -52,17 +56,17 @@ export default function Task({ task, parentColumnId }: { task: TaskState; parent
               paddingRight: 2,
               borderRadius: 1,
             }}
-            variant="subtitle2"
+            variant="caption"
             color="textSecondary"
           >
             {taskStatusTextMap[task.status]}
           </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
+          <Typography variant="caption" color="textSecondary">
             Jan. 26 1982
           </Typography>
         </CardContent>
       </Card>
-      {editTaskOpen && "adf"}
+      {editTaskOpen && <EditTaskModal task={task} onCloseClick={onCloseEditTask} />}
     </>
   );
 }

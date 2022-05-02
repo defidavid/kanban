@@ -45,7 +45,8 @@ export default function TaskMenu({
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleEdit}>Edit column</MenuItem>
+        <MenuItem onClick={handleEdit}>Edit task</MenuItem>
+        <MenuItem onClick={handleEdit}>Set Status: closed</MenuItem>
         <MenuItem onClick={handleDelete}>Delete task</MenuItem>
       </Menu>
     </div>

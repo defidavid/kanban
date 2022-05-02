@@ -2,12 +2,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { FormEvent, useCallback, useState } from "react";
 import useKanban from "../../hooks/useKanban";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog } from "../../components/Dialog";
+import TaskTitleInput from "../../components/TaskTitleInput";
 
 export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => void }): JSX.Element {
   const [name, setName] = useState("");
@@ -46,13 +46,7 @@ export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => v
       </DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TextField
-            fullWidth
-            label="Column name"
-            autoFocus
-            onChange={(e: React.ChangeEvent) => setName((e.target as HTMLTextAreaElement).value)}
-            value={name}
-          />
+          <TaskTitleInput onChange={value => setName(value)} value={name} />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>
