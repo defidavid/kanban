@@ -40,7 +40,7 @@ export default function EditColumnModal({
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Edit column
+        {t("words.EditColumn")}
         <IconButton
           aria-label="close"
           onClick={onCloseClick}

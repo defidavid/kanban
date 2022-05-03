@@ -45,7 +45,7 @@ export default function EditTaskModal({
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Update task
+        {t("words.EditTask")}
         <IconButton
           aria-label="close"
           onClick={onCloseClick}

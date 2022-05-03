@@ -44,7 +44,7 @@ export default function AddTaskModal({
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Add a task
+        {t("words.AddTask")}
         <IconButton
           aria-label="close"
           onClick={onCloseClick}
