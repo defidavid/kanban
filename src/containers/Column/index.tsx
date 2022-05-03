@@ -13,6 +13,7 @@ import Task from "../Task";
 import { COLUMN, TASK } from "../../constants/dnd";
 import { TaskDragItem } from "../Task/types";
 import useWindowBreakpoint from "../../hooks/useWindowBreakpoint";
+import { useTranslation } from "react-i18next";
 
 type ColumnDragItem = {
   column: ColumnState;
@@ -28,20 +29,21 @@ export default function Column({ column, index }: { column: ColumnState; index: 
 
   const { deleteColumn, getTask, moveTask, updateColumnOrder } = useKanban();
 
+  const { t } = useTranslation();
+
   const onEditColumnClick = useCallback(() => setEditColumnOpen(true), []);
   const onCloseEditColumn = useCallback(() => setEditColumnOpen(false), []);
   const onCloseAddTask = useCallback(() => setAddTaskOpen(false), []);
   const onDeleteColumnClick = useCallback(() => {
     const msg =
       column.taskList.length || column.archivedTaskList.length > 0
-        ? `This action will remove any cards, including archived, associated with the column. \n
-    Are you sure you want to delete this column?`
-        : "Are you sure you want to delete this column?";
+        ? t("messages.ConfirmColumnDelete1")
+        : t("messages.ConfirmColumnDelete2");
 
     if (window.confirm(msg)) {
       deleteColumn(column.id);
     }
-  }, [deleteColumn, column]);
+  }, [deleteColumn, column, t]);
 
   const ref = useRef<HTMLDivElement>(null);
 

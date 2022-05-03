@@ -1,7 +1,11 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
+import { useTranslation } from "react-i18next";
+
 export default function AddColumnCard({ onClick }: { onClick: () => void }): JSX.Element {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -26,7 +30,7 @@ export default function AddColumnCard({ onClick }: { onClick: () => void }): JSX
         ]}
         onClick={onClick}
       >
-        <Typography>&#x2b; Add column</Typography>
+        <Typography>&#x2b; {t("words.AddColumn")}</Typography>
       </ButtonBase>
     </Box>
   );

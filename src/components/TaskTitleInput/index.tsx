@@ -1,14 +1,18 @@
 import TextField from "@mui/material/TextField";
+import { useTranslation } from "react-i18next";
 
 export default function TaskTitleInput({
   value,
   onChange,
-  label = "Task name",
+  label,
 }: {
   value: string;
   onChange: (value: string) => void;
   label?: string;
 }): JSX.Element {
+  const { t } = useTranslation();
+  label = label || t("words.TaskName");
+
   return (
     <TextField
       fullWidth

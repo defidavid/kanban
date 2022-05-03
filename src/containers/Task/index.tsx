@@ -12,6 +12,7 @@ import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { TASK } from "../../constants/dnd";
 import { useRef } from "react";
 import { TaskDragItem } from "./types";
+import { useTranslation } from "react-i18next";
 
 export default function Task({
   task,
@@ -26,6 +27,8 @@ export default function Task({
   const [editTaskOpen, setEditTaskOpen] = useState(false);
 
   const { deleteTask, updateTask, updateTaskArchive, updateTaskOrder, moveTask } = useKanban();
+
+  const { t } = useTranslation();
 
   const [{ isDragging }, drag] = useDrag<TaskDragItem, void, { isDragging: boolean }>({
     type: TASK,
@@ -122,10 +125,10 @@ export default function Task({
   const onCloseEditTask = useCallback(() => setEditTaskOpen(false), []);
 
   const onDeleteTaskClick = useCallback(() => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
+    if (window.confirm(t("messages.ConfirmTaskDelete"))) {
       deleteTask({ id: task.id, parentColumnId });
     }
-  }, [deleteTask, task, parentColumnId]);
+  }, [deleteTask, task, parentColumnId, t]);
 
   const onChangeStatusClick = useCallback(
     status => {

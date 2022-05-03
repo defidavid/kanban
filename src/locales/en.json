@@ -1,0 +1,29 @@
+{
+  "translation": {
+    "words": {
+      "AddColumn": "Add column",
+      "CreateColumn": "Create column",
+      "CreateTask": "Create task",
+      "EditColumn": "Edit column",
+      "DeleteColumn": "Delete column",
+      "Description": "Description",
+      "CharactersRemaining": "Characters Remaining",
+      "DeleteTask": "Delete task",
+      "EditTask": "Edit task",
+      "Archive": "Archive",
+      "SetStatus": "Set Status",
+      "TaskName": "Task name",
+      "ColumnName": "Column name",
+      "UpdateColumn": "Update column",
+      "UpdateTask": "Update task"
+    },
+    "messages": {
+      "EmptyBoard": "This project does not have any columns or cards.",
+      "Lost": "Are you lost?",
+      "Help": "Let me <1>help</1> you. :)",
+      "ConfirmColumnDelete1": "This action will remove any cards, including archived, associated with the column. \n\n Are you sure you want to delete this column?",
+      "ConfirmColumnDelete2": "Are you sure you want to delete this column?",
+      "ConfirmTaskDelete": "Are you sure you want to delete this task?"
+    }
+  }
+}

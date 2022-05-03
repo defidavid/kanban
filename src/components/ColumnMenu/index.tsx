@@ -5,6 +5,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { MouseEventHandler, useCallback, useState } from "react";
 import { ColumnState } from "../../contexts/kanban/types";
 import Divider from "@mui/material/Divider";
+import { useTranslation } from "react-i18next";
 
 export default function ColumnMenu({
   onEditColumnClick,
@@ -17,6 +18,8 @@ export default function ColumnMenu({
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
+
+  const { t } = useTranslation();
 
   const handleClick: MouseEventHandler = event => {
     setAnchorEl(event.currentTarget);
@@ -49,9 +52,9 @@ export default function ColumnMenu({
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleEdit}>Edit column</MenuItem>
+        <MenuItem onClick={handleEdit}>{t("words.EditColumn")}</MenuItem>
         {!column.taskList.length && <Divider />}
-        {!column.taskList.length && <MenuItem onClick={handleDelete}>Delete column</MenuItem>}
+        {!column.taskList.length && <MenuItem onClick={handleDelete}>{t("words.DeleteColumn")}</MenuItem>}
       </Menu>
     </div>
   );

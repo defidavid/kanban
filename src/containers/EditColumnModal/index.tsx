@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Dialog } from "../../components/Dialog";
 import { ColumnState } from "../../contexts/kanban/types";
 import TaskTitleInput from "../../components/TaskTitleInput";
+import { useTranslation } from "react-i18next";
 
 export default function EditColumnModal({
   onCloseClick,
@@ -21,6 +22,8 @@ export default function EditColumnModal({
   const { updateColumn } = useKanban();
 
   const buttonDisabled = !name.trim();
+
+  const { t } = useTranslation();
 
   const onSubmit = useCallback(
     (e: FormEvent) => {
@@ -53,11 +56,11 @@ export default function EditColumnModal({
       </DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TaskTitleInput label="Column name" onChange={value => setName(value)} value={name} />
+          <TaskTitleInput label={t("words.ColumnName")} onChange={value => setName(value)} value={name} />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>
-            Update column
+            {t("words.UpdateColumn")}
           </Button>
         </DialogActions>
       </form>

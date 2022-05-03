@@ -8,10 +8,13 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog } from "../../components/Dialog";
 import TaskTitleInput from "../../components/TaskTitleInput";
+import { useTranslation } from "react-i18next";
 
 export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => void }): JSX.Element {
   const [name, setName] = useState("");
   const { addColumn } = useKanban();
+
+  const { t } = useTranslation();
 
   const buttonDisabled = !name.trim();
 
@@ -30,7 +33,7 @@ export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => v
   return (
     <Dialog onClose={onCloseClick} open>
       <DialogTitle>
-        Add a column
+        {t("words.AddColumn")}
         <IconButton
           aria-label="close"
           onClick={onCloseClick}
@@ -46,11 +49,11 @@ export default function AddColumnModal({ onCloseClick }: { onCloseClick: () => v
       </DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TaskTitleInput label="Column name" onChange={value => setName(value)} value={name} />
+          <TaskTitleInput label={t("words.ColumnName")} onChange={value => setName(value)} value={name} />
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>
-            Create column
+            {t("words.CreateColumn")}
           </Button>
         </DialogActions>
       </form>

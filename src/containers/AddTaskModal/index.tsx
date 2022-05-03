@@ -10,6 +10,7 @@ import { Dialog } from "../../components/Dialog";
 import { ColumnState } from "../../contexts/kanban/types";
 import TaskDescriptionInput from "../../components/TaskDescriptionInput";
 import TaskTitleInput from "../../components/TaskTitleInput";
+import { useTranslation } from "react-i18next";
 
 export default function AddTaskModal({
   onCloseClick,
@@ -21,6 +22,8 @@ export default function AddTaskModal({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const { addTask } = useKanban();
+
+  const { t } = useTranslation();
 
   const trimmedName = name.trim();
   const trimmedDescription = description.trim();
@@ -64,7 +67,7 @@ export default function AddTaskModal({
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={buttonDisabled}>
-            Create task
+            {t("words.CreateTask")}
           </Button>
         </DialogActions>
       </form>
