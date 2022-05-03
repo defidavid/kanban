@@ -52,3 +52,6 @@ yarn start
 :white_check_mark: Auto focus on initial state (including modals)
 
 :white_check_mark: Input validation (max length, trim functions, button disabled until form complete)
+
+### Known Issues
+* Unable to view/unarchive archived tasks
