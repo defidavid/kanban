@@ -37,8 +37,15 @@ export default function Board(): JSX.Element {
     <>
       {!small && (
         <Container
-          maxWidth="xl"
-          sx={{ height: "100%", paddingTop: 3, paddingBottom: 3, display: "flex", marginLeft: 0, marginRight: 0 }}
+          sx={{
+            height: "100%",
+            paddingTop: 3,
+            paddingBottom: 3,
+            display: "flex",
+            marginLeft: 0,
+            marginRight: 0,
+            maxWidth: "none !important",
+          }}
         >
           {!columns.length && <EmptyBoard onClick={onAddColumnClick} />}
           {columns.map((column, i) => {
