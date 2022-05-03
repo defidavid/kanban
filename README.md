@@ -1,7 +1,8 @@
 # Kanban Take Home Assessment
 
 ### Desktop
-![image](https://user-images.githubusercontent.com/2999380/166390454-3d947275-ac60-40be-b6fc-703b5c744fe0.png)
+![image](https://user-images.githubusercontent.com/2999380/166396289-123ff994-609c-4807-b0dc-4e9ce6cbb252.png)
+
 
 ### Responsive
 ![image](https://user-images.githubusercontent.com/2999380/166390506-b883acf3-0534-4003-a210-fe08c49ab95f.png)
