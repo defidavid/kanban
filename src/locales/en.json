@@ -23,7 +23,9 @@
       "Help": "Let me <1>help</1> you. :)",
       "ConfirmColumnDelete1": "This action will remove any cards, including archived, associated with the column. \n\n Are you sure you want to delete this column?",
       "ConfirmColumnDelete2": "Are you sure you want to delete this column?",
-      "ConfirmTaskDelete": "Are you sure you want to delete this task?"
+      "ConfirmTaskDelete": "Are you sure you want to delete this task?",
+      "EmptyColumn1": "Add a task to this column",
+      "EmptyColumn2": "or drag & drop a task from a different column."
     }
   }
 }

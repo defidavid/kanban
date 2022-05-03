@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { ColumnState } from "../../contexts/kanban/types";
 import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
 import AddIcon from "@mui/icons-material/Add";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -207,6 +208,22 @@ export default function Column({ column, index }: { column: ColumnState; index: 
               const task = getTask(taskId);
               return <Task index={i} parentColumnId={column.id} task={task} key={taskId} />;
             })}
+            {!column.taskList.length && (
+              <Box mt={4} p={7} textAlign="center">
+                <Link
+                  onClick={() => {
+                    setAddTaskOpen(true);
+                  }}
+                  textAlign="center"
+                  color="textSecondary"
+                  variant="body1"
+                  component="button"
+                >
+                  {t("messages.EmptyColumn1")}
+                </Link>
+                <Typography color="textSecondary">{t("messages.EmptyColumn2")}</Typography>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
