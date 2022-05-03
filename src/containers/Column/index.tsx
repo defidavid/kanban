@@ -4,7 +4,7 @@ import { ColumnState } from "../../contexts/kanban/types";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EditColumnModal from "../EditColumnModal";
 import useKanban from "../../hooks/useKanban";
 import AddTaskModal from "../AddTaskModal";
@@ -24,6 +24,14 @@ type ColumnDragItem = {
 export default function Column({ column, index }: { column: ColumnState; index: number }): JSX.Element {
   const [editColumnOpen, setEditColumnOpen] = useState(false);
   const [addTaskOpen, setAddTaskOpen] = useState(false);
+
+  const addColumnButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (addColumnButtonRef.current) {
+      addColumnButtonRef.current.focus();
+    }
+  }, []);
 
   const bp = useWindowBreakpoint();
 
@@ -180,6 +188,7 @@ export default function Column({ column, index }: { column: ColumnState; index: 
             </Box>
             <Box display="flex">
               <IconButton
+                ref={addColumnButtonRef}
                 onClick={() => {
                   setAddTaskOpen(true);
                 }}
