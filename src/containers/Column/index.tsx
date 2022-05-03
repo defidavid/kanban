@@ -209,7 +209,7 @@ export default function Column({ column, index }: { column: ColumnState; index: 
               return <Task index={i} parentColumnId={column.id} task={task} key={taskId} />;
             })}
             {!column.taskList.length && (
-              <Box mt={4} p={7} textAlign="center">
+              <Box mt={1} p={7} pt={5} textAlign="center">
                 <Link
                   onClick={() => {
                     setAddTaskOpen(true);
