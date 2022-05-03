@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Kanban Take Home Assessment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Desktop
+![image](https://user-images.githubusercontent.com/2999380/166390454-3d947275-ac60-40be-b6fc-703b5c744fe0.png)
 
-## Available Scripts
+### Responsive
+![image](https://user-images.githubusercontent.com/2999380/166390506-b883acf3-0534-4003-a210-fe08c49ab95f.png)
 
-In the project directory, you can run:
 
-### `npm start`
+### Run App
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+npm install --global yarn
+yarn
+yarn start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Completed Tasks
 
-### `npm test`
+:white_check_mark: Model: Column (Name, Order)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+:white_check_mark: Model: Card (Name, Description, Created date, Status(Open, Closed), Order)
 
-### `npm run build`
+:white_check_mark:  User can add column with name
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+:white_check_mark: User can modify column name
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+:white_check_mark: User can delete empty column
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+:white_check_mark: User can move columns by drag & drop
 
-### `npm run eject`
+:white_check_mark: User can add card to column with name and description
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+:white_check_mark: User can modify card details
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+:white_check_mark: User can identify / switch status of card
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+:white_check_mark: User can move / order card by drag & drop
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+:white_check_mark: User can archive card
 
-## Learn More
+:white_check_mark: i18n
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+:white_check_mark: Persistent storage (localStorage)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+:white_check_mark: Responsive web design (small screen sizes)
 
-### Code Splitting
+:white_check_mark: Render instruction when column is empty
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+:white_check_mark: 404 Page if url is not valid
 
-### Analyzing the Bundle Size
+:white_check_mark: Auto focus on initial state (including modals)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+:white_check_mark: Input validation (max length, trim functions, button disabled until form complete)
