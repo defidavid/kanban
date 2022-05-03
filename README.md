@@ -59,3 +59,9 @@ yarn start
 
 ### Known Issues
 * Unable to view/unarchive archived tasks
+
+### Tech Used
+* Scaffolding: create-react-app
+* Component library: Material-UI
+* State management: reducer + context
+* DnD: react-dnd
