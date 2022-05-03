@@ -12,6 +12,7 @@
 
 ```
 npm install --global yarn
+// Install Git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 git clone https://github.com/defidavid/kanban.git
 cd kanban
 yarn
