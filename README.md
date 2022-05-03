@@ -66,3 +66,4 @@ yarn start
 * State management: reducer + context
 * DnD: react-dnd
 * Routing: react-router
+* Utilities: lodash
