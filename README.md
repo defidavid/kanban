@@ -11,6 +11,8 @@
 ### Run App
 
 ```
+git clone https://github.com/defidavid/kanban.git
+cd kanban
 npm install --global yarn
 yarn
 yarn start
