@@ -1,4 +1,4 @@
-# Kanban Take Home Assessment
+# Kanban
 
 ### Desktop
 ![image](https://user-images.githubusercontent.com/2999380/166396289-123ff994-609c-4807-b0dc-4e9ce6cbb252.png)
