@@ -65,3 +65,4 @@ yarn start
 * Component library: Material-UI
 * State management: reducer + context
 * DnD: react-dnd
+* Routing: react-router
